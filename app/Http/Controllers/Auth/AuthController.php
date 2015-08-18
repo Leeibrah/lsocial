@@ -40,15 +40,20 @@ class AuthController extends Controller {
             'password'  => $password
         ], $remember == 1 ? true : false))
         {
-            if( $this->auth->user()->hasRole('user'))
-            {
-                return redirect()->route('user.home');
-            }
-
             if( $this->auth->user()->hasRole('administrator'))
             {
                 return redirect()->route('admin.home');
             }
+
+            if( $this->auth->user()->hasRole('business'))
+            {
+                return redirect()->route('business.home');
+            }
+
+            if( $this->auth->user()->hasRole('user'))
+            {
+                return redirect()->route('user.home');
+            }            
 
         }
         else
@@ -111,7 +116,8 @@ class AuthController extends Controller {
 
     public function getSocialRedirect( $provider )
     {
-        $providerKey = \Config::get('services.' . $provider);
+
+        $providerKey = \Config::get('services.' . $provider); 
         if(empty($providerKey))
             return view('pages.status')
                 ->with('error','No such provider');
@@ -123,8 +129,22 @@ class AuthController extends Controller {
     public function getSocialHandle( $provider )
     {
 
-        $user = Socialite::driver( $provider )->user();
+        $user = Socialite::driver( $provider )->user(); 
+        // dd($user);
 
+        $code = Input::get('code');
+        if(!$code)
+            return redirect()->route('auth.login')
+                ->with('status', 'danger')
+                ->with('message', 'You did not share your profile data with our socail app.');
+
+        if(!$user->email)
+        {
+            return redirect()->route('auth.login')
+                ->with('status', 'danger')
+                ->with('message', 'You did not share your email with our social app. You need to visit App Settings and remove our app, than you can come back here and login again. Or you can create new account.');
+        }
+        
         $socialUser = null;
 
         //Check is this email present
@@ -179,6 +199,25 @@ class AuthController extends Controller {
         }
 
         return \App::abort(500);
+    }
+
+    public function redirectToProvider()
+    {
+        return Socialite::driver('facebook')
+             ->scopes(['scope1', 'scope2'])->redirect();
+    }
+
+    /**
+     * Obtain the user information from Facebook.
+     *
+     * @return Response
+     */
+
+    public function handleProviderCallback()
+    {
+        $user = Socialite::driver('facebook')->user();
+
+        // $user->token;
     }
 
 }

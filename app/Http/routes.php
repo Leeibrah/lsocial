@@ -16,12 +16,21 @@ Route::post('/password/{token}',['as' => $a . 'reset-post',     'uses' => 'Auth\
 $s = 'social.';
 Route::get('/social/redirect/{provider}',   ['as' => $s . 'redirect',   'uses' => 'Auth\AuthController@getSocialRedirect']);
 Route::get('/social/handle/{provider}',     ['as' => $s . 'handle',     'uses' => 'Auth\AuthController@getSocialHandle']);
+// Route::get('auth/facebook', ['as' => $s . 'redirect',   'uses' => 'Auth\AuthController@redirectToProvider']);
+// Route::get('auth/facebook', ['as' => $s . 'handle',     'uses' => 'Auth\AuthController@handleProviderCallback']);
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:administrator'], function()
 {
     $a = 'admin.';
     Route::get('/', ['as' => $a . 'home', 'uses' => 'AdminController@getHome']);
 });
+
+Route::group(['prefix' => 'business', 'middleware' => 'auth:business'], function()
+{
+    $a = 'business.';
+    Route::get('/', ['as' => $a . 'home', 'uses' => 'BusinessController@getHome']);
+});
+
 
 Route::group(['prefix' => 'user', 'middleware' => 'auth:user'], function()
 {

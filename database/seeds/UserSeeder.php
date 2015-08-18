@@ -10,21 +10,31 @@ class UserSeeder extends Seeder{
         DB::table('users')->delete();
 
         $adminRole = Role::whereName('administrator')->first();
+        $businessRole = Role::whereName('business')->first();
         $userRole = Role::whereName('user')->first();
 
         $user = User::create(array(
-            'first_name'    => 'John',
+            'first_name'    => 'Admin',
             'last_name'     => 'Doe',
-            'email'         => 'j.doe@codingo.me',
-            'password'      => Hash::make('password')
+            'email'         => 'admin@admin.com',
+            'password'      => Hash::make('admin')
+            
         ));
         $user->assignRole($adminRole);
 
         $user = User::create(array(
-            'first_name'    => 'Jane',
+            'first_name'    => 'Biz',
+            'last_name'     => 'One',
+            'email'         => 'biz@biz.com',
+            'password'      => Hash::make('biz')
+        ));
+        $user->assignRole($businessRole);
+
+        $user = User::create(array(
+            'first_name'    => 'John',
             'last_name'     => 'Doe',
-            'email'         => 'jane.doe@codingo.me',
-            'password'      => Hash::make('janesPassword')
+            'email'         => 'user@user.com',
+            'password'      => Hash::make('user')
         ));
         $user->assignRole($userRole);
     }

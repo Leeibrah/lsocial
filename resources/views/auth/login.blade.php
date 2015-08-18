@@ -34,7 +34,7 @@
             'id'                            => 'inputPassword',
             'data-parsley-required-message' => 'Password is required',
             'data-parsley-trigger'          => 'change focusout',
-            'data-parsley-minlength'        => '6',
+            'data-parsley-minlength'        => '2',
             'data-parsley-maxlength'        => '20'
         ]) !!}
 

@@ -51,7 +51,7 @@ class PasswordResetController extends Controller {
     public function postPasswordResetForm( $token )
     {
         $rules = [
-            'password'              => 'required|min:6|max:20',
+            'password'              => 'required|min:2|max:20',
             'password_confirmation' => 'required|same:password'
         ];
 

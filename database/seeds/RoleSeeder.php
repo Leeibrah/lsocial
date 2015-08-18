@@ -9,11 +9,16 @@ class RoleSeeder extends Seeder{
         DB::table('roles')->delete();
 
         Role::create([
-            'name'   => 'user'
+            'name'   => 'administrator'
         ]);
 
+
         Role::create([
-            'name'   => 'administrator'
+            'name'   => 'business'
+        ]);
+        
+        Role::create([
+            'name'   => 'user'
         ]);
 
     }
